@@ -64,7 +64,7 @@ module tb_mult;
 
                 // Wait for the two-cycle input-to-output latency
                 repeat (2) @(posedge clk);
-                #1;
+                #2;
 
                 checked = checked + 1;
 
