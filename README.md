@@ -25,3 +25,6 @@ The design contains:
 
 ```bash
 iverilog -g2012 -o sim tb/tb_mult.v rtl/full_adder.v rtl/mult_array.v
+# DVD_assgn
+DVD rtl to gds assignment
+ 557fde96eed43430f26d63f4d876ef070358be04
