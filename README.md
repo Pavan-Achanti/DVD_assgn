@@ -2,8 +2,8 @@
 
 ## Team members
 
-1. Name: <Dhriti Sharma>
-   Roll number: <2026203015>
+1. Name: Dhriti Sharma
+   Roll number: 2026203015 
 
 2. Name: <>
    Roll number: <>
