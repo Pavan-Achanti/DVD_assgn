@@ -38,7 +38,7 @@ DVD rtl to gds assignment
 | Total cell area               | 740.7104 µm² |
 | Flip-flop area                | 400.384 µm² |
 | Flip-flop area (% of total)   | 54.05%      |
-| Netlist simulation result     | PASS        |
+| Netlist simulation result     | PASS: 256 vectors checked, 0 errors      |
 ### Three most-used cell types
 | Cell type                    | Count |
 |------------------------------|------:|
