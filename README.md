@@ -31,7 +31,7 @@ DVD rtl to gds assignment
 ```
 ## Part B: Logic Synthesis with Yosys
 
-| Metric                        | Your result |
+| Metric                        | Value |
 |-------------------------------|-------------|
 | Total number of cells         | 63          |
 | Number of flip-flops          | 16          |
@@ -45,4 +45,5 @@ DVD rtl to gds assignment
 | `sky130_fd_sc_hd__dfrtp_1`   | 16    |
 | `sky130_fd_sc_hd__nand2_1`   | 8     |
 | `sky130_fd_sc_hd__a21oi_1`   | 6     |
+
 The dfrtp_1 cells are flip-flops with an active-low asynchronous reset. The nand2_1 cells are two-input NAND gates, and a21oi_1 cells implement an AND-OR-invert logic function.
