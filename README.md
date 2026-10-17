@@ -5,8 +5,8 @@
 1. Name: Dhriti Sharma
    Roll number: 2026203015 
 
-2. Name: <>
-   Roll number: <>
+2. Name: Achanti Pavan Kumar   
+   Roll number: 2026203016
 
 ## Design
 
