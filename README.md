@@ -207,28 +207,23 @@ The final routed wirelength for the 4.0 ns run was 2,979 µm. The flow also inse
 
 The estimated post-route maximum frequency was calculated using:
 
-\[
-F_{\max,\mathrm{post}} =
-\frac{1000}{T_{\mathrm{clock}}-\mathrm{WNS}}
-\]
+$$
+F_{\max,\mathrm{post}} = \frac{1000}{T_{\mathrm{clock}}-\mathrm{WNS}}
+$$
 
 where the clock period and worst setup slack (WNS) are expressed in nanoseconds.
 
 For the 4.0 ns run:
 
-\[
-T_{\min,\mathrm{post}} =
-4.0-0.096035
-=3.903965\ \text{ns}
-\]
+$$
+T_{\min,\mathrm{post}} = 4.0 - 0.096035 = 3.903965\ \text{ns}
+$$
 
 Therefore,
 
-\[
-F_{\max,\mathrm{post}} =
-\frac{1000}{3.903965}
-\approx 256.15\ \text{MHz}
-\]
+$$
+F_{\max,\mathrm{post}} = \frac{1000}{3.903965} \approx 256.15\ \text{MHz}
+$$
 
 The estimated maximum frequency after physical implementation is approximately **256.15 MHz**, compared with the Part C estimate of **384.02 MHz**. The reduction is consistent with the additional timing effects introduced by physical implementation, including routing parasitics and inserted cells.
 
