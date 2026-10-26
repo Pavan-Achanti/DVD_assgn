@@ -112,3 +112,153 @@ For a 4-bit multiplier, the approximate architectural estimate is `2N = 8` full-
 3. `cp sta/mult_array_timing.rpt sta/mult_array_timing_10ns.rpt`
 4. `sta -exit sta/sta.tcl 2>&1 | tee sta/run_tmin.log`
 5. `cat sta/mult_array_timing.rpt`
+
+# Part D: Physical Design of a 4-Bit Array Multiplier Using LibreLane
+
+## 1. Objective
+
+The objective of Part D was to perform the physical design of the 4-bit array multiplier using LibreLane and the SKY130 standard-cell library. The flow included floorplanning, placement, clock-tree synthesis, routing, timing analysis, DRC, and LVS. Two runs were performed, using clock periods of 3.5 ns and 4.0 ns, to evaluate timing and physical implementation results.
+
+## 2. Design Configuration
+
+The design was implemented using the following configuration:
+
+| Parameter | Value |
+|---|---|
+| Design name | `mult_array` |
+| PDK | SKY130A |
+| Standard-cell library | SKY130 HD |
+| Clock port | `clk` |
+| Initial clock period | 3.5 ns |
+| Final clock period | 4.0 ns |
+| Floorplan sizing mode | Absolute |
+| Die area | 150 × 150 µm² |
+
+The configuration file is `config.json`, located in the `pnr` directory. The RTL source files used were `full_adder.v` and `mult_array.v`.
+
+The relevant configuration entries were:
+
+```json
+{
+  "DESIGN_NAME": "mult_array",
+  "VERILOG_FILES": [
+    "dir::../rtl/full_adder.v",
+    "dir::../rtl/mult_array.v"
+  ],
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 4.0,
+  "FP_SIZING": "absolute",
+  "DIE_AREA": [0, 0, 150, 150]
+}
+```
+
+For the first run, `CLOCK_PERIOD` was set to `3.5`. It was subsequently changed to `4.0` for the second run.
+
+## 3. Commands Used
+
+The physical-design flow was executed from the `pnr` directory.
+
+### Run 1: Clock Period of 3.5 ns
+
+```bash
+cd pnr
+```
+
+Set `CLOCK_PERIOD` to `3.5` in `config.json`, then execute:
+
+```bash
+librelane config.json
+```
+
+This run completed the physical-design flow. However, the worst setup slack at the slow corner was negative, indicating a setup-timing violation.
+
+### Run 2: Clock Period of 4.0 ns
+
+Change the clock period in `config.json` to `4.0`, then execute:
+
+```bash
+librelane config.json
+```
+
+The second run completed with positive worst setup slack and no reported setup violations across the fast, typical, and slow corners.
+
+
+
+## 4. Results and Comparison
+
+
+| Metric | Run 1: 3.5 ns | Run 2: 4.0 ns |
+|---|---:|---:|
+| Clock period | 3.5 ns | 4.0 ns |
+| Worst setup slack at slow corner | −0.010826 ns | +0.096035 ns |
+| Setup timing violations | Timing violation present | 0 across all reported corners |
+| DRC violations | 0 | 0 |
+| LVS violations | 0 | 0 |
+| Hold buffers | 4 | 3 |
+| Fill cells | 1,208 | 1,209 |
+| Standard cells after place and route | 121 | 121 |
+| Final routed wirelength | 2985 µm | 2,979 µm |
+
+The 3.5 ns run completed with a worst setup slack of −0.010826 ns, corresponding to a small setup-timing violation. Increasing the clock period to 4.0 ns improved the timing margin, producing a worst setup slack of +0.096035 ns and eliminating the reported setup violations.
+
+The final routed wirelength for the 4.0 ns run was 2,979 µm. The flow also inserted buffers and fill cells as part of timing repair, clock distribution, hold-time correction, and physical-layout requirements.
+
+## 5. Post-Route Frequency Estimate
+
+The estimated post-route maximum frequency was calculated using:
+
+\[
+F_{\max,\mathrm{post}} =
+\frac{1000}{T_{\mathrm{clock}}-\mathrm{WNS}}
+\]
+
+where the clock period and worst setup slack (WNS) are expressed in nanoseconds.
+
+For the 4.0 ns run:
+
+\[
+T_{\min,\mathrm{post}} =
+4.0-0.096035
+=3.903965\ \text{ns}
+\]
+
+Therefore,
+
+\[
+F_{\max,\mathrm{post}} =
+\frac{1000}{3.903965}
+\approx 256.15\ \text{MHz}
+\]
+
+The estimated maximum frequency after physical implementation is approximately **256.15 MHz**, compared with the Part C estimate of **384.02 MHz**. The reduction is consistent with the additional timing effects introduced by physical implementation, including routing parasitics and inserted cells.
+
+The 3.5 ns run had negative setup slack, so its nominal clock period should not be interpreted as a timing-clean operating point.
+
+## 6. Physical Verification
+
+The final 4.0 ns run reported zero DRC violations,  and zero LVS violations.
+
+Design Rule Checking verifies that the physical layout satisfies the applicable geometric and manufacturing rules. Layout Versus Schematic (LVS) checks whether the electrical connectivity extracted from the layout matches the intended circuit netlist. Passing both checks provides evidence that the layout is geometrically compliant and electrically consistent with the design.
+
+## 7. Layout Inspection
+
+The final GDS file was opened in KLayout for visual inspection. Two screenshots were captured:
+
+1. **Full-chip view:** Shows the overall die boundary and the placement of the design within the floorplan.
+2. **Zoomed layout view:** Shows the standard-cell rows and metal routing in greater detail.
+
+The screenshots are included with the Part D submission as evidence of the completed physical layout in the report
+
+## 8. Final Output
+
+The 4.0 ns run was selected as the final implementation because it completed with positive worst setup slack and zero reported setup violations across all timing corners. Its GDS file, metrics, and layout screenshots were used for the final submission.
+
+The principal results of the final run were:
+
+- Clock period: 4.0 ns
+- Worst setup slack: +0.096035 ns
+- Estimated post-route maximum frequency: 256.15 MHz
+- Standard cells after place and route: 121
+- Final routed wirelength: 2,979 µm
+- DRC violations: 0
+- LVS violations: 0
